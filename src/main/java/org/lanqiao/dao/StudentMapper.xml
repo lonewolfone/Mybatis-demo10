@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--接口-->
+<mapper namespace="org.lanqiao.dao.StudentMapper">
+    <!--开启二级缓存-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+
+    <select id="findStuByCid" resultType="Student">
+        select * from stu where cid = #{cid};
+    </select>
+
+
+
+    <resultMap id="stuToCls" type="Student">
+        <id column="id" property="id"></id>
+        <result column="sname" property="sname"></result>
+        <result column="sage" property="sage"></result>
+        <result column="ssex" property="ssex"></result>
+        <!--设置关联的集合属性,即:Clas类,属性的映射-->
+        <association property="clas" javaType="Clas" select="org.lanqiao.dao.ClasMapper.findCidByCid" column="cid">
+            <id column="cid" property="cid"></id>
+            <result column="cname" property="cname"></result>
+        </association>
+    </resultMap>
+    <!--单表查询-->
+    <select id="findStuBySids" resultMap="stuToCls">
+        select id,sname,sage,ssex from stu where id = #{id};
+    </select>
+</mapper>

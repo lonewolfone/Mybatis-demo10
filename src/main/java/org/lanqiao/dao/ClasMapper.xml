@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--接口-->
+<mapper namespace="org.lanqiao.dao.ClasMapper">
+        <resultMap id="clsAndStu" type="Clas">
+        <id column="cid" property="cid"></id>
+        <result column="cname" property="cname"></result>
+        <collection property="studentSet" ofType="Student" select="org.lanqiao.dao.StudentMapper.findStuByCid" column="cid">
+            <id column="id" property="id"></id>
+            <result column="sname" property="sname"></result>
+            <result column="sage" property="sage"></result>
+            <result column="ssex" property="ssex"></result>
+        </collection>
+    </resultMap>
+    <!--多表查询：单表查询-->
+    <select id="findCidByCid" resultMap="clsAndStu">
+        select * from class where cid = #{cid};
+    </select>
+</mapper>
